@@ -1,0 +1,46 @@
+#   macOS
+.DS_Store
+.AppleDouble
+.directory
+.LSOverride
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+# Gopath
+bin
+pkg
+# Visual Studio Code
+.vscode
+# File-based project format
+*.iws
+# IntelliJ
+out/
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+# JIRA plugin
+atlassian-ide-plugin.xml
+.idea/replstate.xml
+### JetBrains+all Patch ###
+# Ignores the whole .idea folder and all .iml files
+# See https://github.com/joeblau/gitignore.io/issues/186 and https://github.com/joeblau/gitignore.io/issues/360
+.idea/
+*.iml
+modules.xml
+*.ipr
+#   Visual Studio Code
+.vscode/*
+# User-specific stuff
+app/src/tmp/
+app/src/debug
+app/src/main
+app/main
+app/go.sum
+api/src/tmp/
+api/src/debug
+api/src/main
+api/main
+api/go.sum

@@ -1,0 +1,78 @@
+version: "3.7"
+services:
+  database-postgres-dev:
+    container_name: database-postgres-dev
+    image: postgres
+    restart: always
+    volumes:
+      - ./postgres/dumps/:/dumps/
+      - ./postgres/init/:/docker-entrypoint-initdb.d/
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgresqL
+      POSTGRES_DB: dbpostgres      
+    ports:
+      - "5432:5432"
+      - "5433:5433"
+    networks:
+      - tools_proxy
+  adminer-dev:
+    container_name: adminer-dev
+    image: adminer
+    restart: always
+    ports:
+      - 8088:8080
+    networks:
+      - tools_proxy
+  redis-dev:
+    container_name: redis-dev
+    image: redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis/config/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    networks:
+      - tools_proxy
+  rediswebui-dev:
+    container_name: rediswebui-dev
+    image: marian/rebrow
+    ports:
+      - "5001:5001"
+    networks:
+      - tools_proxy
+  minilru-api:
+    volumes:
+      - ./api:/app
+    build:       
+      context: ./
+      dockerfile: DockerfileApi
+    image: local/minilru
+    command: >
+      /bin/sh -c "go get -v github.com/pilu/fresh
+      && go get -u
+      && go build -o /go/bin/main /app/src/*.go
+      && fresh"
+    ports:
+      - "8050:8050"  
+    networks:
+      - tools_proxy         
+  # minilru-tests:
+  #   volumes:
+  #     - ../app:/app
+  #   build: 
+  #     context: ..
+  #   image: local/test/api-data
+  #   command: >
+  #     /bin/sh -c "go get -u
+  #     && go test -v -bench=. -cover 
+  #     github.com/joaoN1x/minilru/src/cache/
+  #     ggithub.com/joaoN1x/minilru/src/db/
+  #     github.com/joaoN1x/minilru/src/utils/
+  #     "
+  #   networks:
+  #     - tools_proxy
+networks:
+  tools_proxy:
+    external:
+      name: tools_network
