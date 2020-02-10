@@ -47,7 +47,7 @@ services:
     build:       
       context: ./
       dockerfile: DockerfileApi
-    image: local/minilru
+    image: local/minilruapi
     command: >
       /bin/sh -c "go get -v github.com/pilu/fresh
       && go get -u
@@ -57,21 +57,22 @@ services:
       - "8050:8050"  
     networks:
       - tools_proxy         
-  # minilru-tests:
-  #   volumes:
-  #     - ../app:/app
-  #   build: 
-  #     context: ..
-  #   image: local/test/api-data
-  #   command: >
-  #     /bin/sh -c "go get -u
-  #     && go test -v -bench=. -cover 
-  #     github.com/joaoN1x/minilru/src/cache/
-  #     ggithub.com/joaoN1x/minilru/src/db/
-  #     github.com/joaoN1x/minilru/src/utils/
-  #     "
-  #   networks:
-  #     - tools_proxy
+  minilru:
+    volumes:
+      - ./app:/app
+    build:       
+      context: ./
+      dockerfile: Dockerfile
+    image: local/minilru
+    command: >
+      /bin/sh -c "go get -v github.com/pilu/fresh
+      && go get -u
+      && go build -o /go/bin/main /app/src/*.go
+      && fresh"
+    ports:
+      - "8081:8081"  
+    networks:
+      - tools_proxy             
 networks:
   tools_proxy:
     external:

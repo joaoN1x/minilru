@@ -14,7 +14,8 @@ CREATE INDEX "url_short" ON "url" ("short");
 CREATE TABLE "urlstats" (
 	"url_short" VARCHAR(50) NOT NULL,
 	"today" DATE NOT NULL,
-	"count" INTEGER NOT NULL DEFAULT 0,
-	CONSTRAINT "urlstats_pkey" PRIMARY KEY ("url_short", "today")
+	"count" INTEGER NOT NULL DEFAULT 0
 );
+CREATE INDEX "urlstats_url_short" ON "urlstats" ("url_short");
+CREATE INDEX "urlstats_today" ON "urlstats" ("today");
 ALTER TABLE "urlstats" ADD FOREIGN KEY ("url_short") REFERENCES "url" ("short");
