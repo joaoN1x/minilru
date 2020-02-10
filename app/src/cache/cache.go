@@ -38,7 +38,7 @@ func GetUrl(key string) string {
 
 	data, err := cacheConnection.Get(key).Result()
 	if err == redis.Nil {
-		debugger.Log("error", string(key)+" does not exist. ", nil)
+		debugger.Log("warning", string(key)+" does not exist. ", nil)
 	} else if err != nil {
 		debugger.Log("warning", "Error ", err)
 	} else {

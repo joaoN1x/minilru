@@ -1,13 +1,8 @@
 package restful
 
 import (
-	//"encoding/json"
 	"encoding/json"
 	"io/ioutil"
-
-	//"net/http"
-	//"strings"
-
 	"net/http"
 
 	"github.com/joaoN1x/minilru/src/db"
@@ -23,22 +18,19 @@ func AddUrl(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		debugger.Log("error", "Error", err)
 	}
-	debugger.PrettyPrint(string(reqBody))
 	bytes := []byte(string(reqBody))
 	var url db.Url
 	json.Unmarshal(bytes, &url)
 
 	resultDb, resultMessage := db.AddUrl(url)
 
-	debugger.PrettyPrint(resultDb)
-	debugger.PrettyPrint(resultMessage)
-
 	var data t.MessageOutData
 	data.Detail = resultMessage
 	if resultDb {
 		data.Affected = 1
-		writeOut(w, r, 200, t.MessageOut{Status: "Added", Code: 200, Data: data})
+		writeOut(w, r, 201, t.MessageOut{Status: "Created", Code: 201, Data: data})
 	} else {
+		debugger.Log("warning", "409 Conflict", nil)
 		writeOut(w, r, 409, t.MessageOut{Status: "Conflict", Code: 409, Data: data})
 	}
 

@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
-
 	"github.com/joaoN1x/minilru/src/debugger"
 	rest "github.com/joaoN1x/minilru/src/restful"
 )
@@ -15,16 +14,13 @@ func main() {
 
 	porta, ok := os.LookupEnv("PORT")
 	if !ok {
-		porta = "8050"
+		porta = "8081"
 		debugger.Log("warning", "Can't find incoming port, using default:"+porta, nil)
 	}
 
 	r := mux.NewRouter()
-
-	// no use of middleware for auth, so it can be used by checkup services
 	r.HandleFunc("/", rest.HeartBeat).Methods("GET")
-	r.HandleFunc("/url/", rest.MiddleOne(rest.AddUrl, rest.BasicAuth)).Methods("POST")
-	r.HandleFunc("/stats/{when}/{short}", rest.MiddleOne(rest.GetStats, rest.BasicAuth)).Methods("GET")
+	r.HandleFunc("/{short}", rest.GetUrl).Methods("GET")
 
 	log.Println("I'm Listenin on :", porta, "...")
 
