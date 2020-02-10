@@ -108,22 +108,36 @@ At the console, where all docker containers are running and shooting logs, check
 After running Docker compose, the following tools are available for better understanding of data flow.
 
 **Rebrow** Redis Webview
+
 http://localhost:5001/
+
 Host: redis-dev
+
 Port: 6379
+
 Database Id: 0
 
+
 **Adminer** Postgresql Webview
+
 http://localhost:8088/
+
 System: PostgreSQL
+
 Server: database-postgres-dev
+
 Username: postgres
+
 Password: postgresqL
+
 Database: dbpostgres
 
 
 
+
 #### Tips
+
+
 When port conflicts arise, just change Dockerfile(s) port's.
 
 
